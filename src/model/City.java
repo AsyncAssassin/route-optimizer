@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Objects;
-
 /**
  * Представляет город в дорожной сети.
  * Город идентифицируется уникальным ID и имеет название.
@@ -39,7 +37,7 @@ public class City {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return id; // Прямое использование примитива эффективнее Objects.hash()
     }
 
     @Override

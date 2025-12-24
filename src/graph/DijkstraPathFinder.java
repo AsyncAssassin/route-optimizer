@@ -21,24 +21,6 @@ public class DijkstraPathFinder {
 
     private final Graph graph;
 
-    /**
-     * Вспомогательный класс для хранения вершины и расстояния до неё в очереди.
-     */
-    private static class Node implements Comparable<Node> {
-        final City city;
-        final int distance;
-
-        Node(City city, int distance) {
-            this.city = city;
-            this.distance = distance;
-        }
-
-        @Override
-        public int compareTo(Node other) {
-            return Integer.compare(this.distance, other.distance);
-        }
-    }
-
     public DijkstraPathFinder(Graph graph) {
         this.graph = graph;
     }
@@ -65,19 +47,19 @@ public class DijkstraPathFinder {
         Set<City> visited = new HashSet<>();
         
         // Приоритетная очередь (min-heap)
-        PriorityQueue<Node> queue = new PriorityQueue<>();
+        PriorityQueue<DijkstraNode> queue = new PriorityQueue<>();
 
         // Инициализация: расстояние до начальной вершины = 0
         for (City city : graph.getAllCities()) {
             distances.put(city, Integer.MAX_VALUE);
         }
         distances.put(from, 0);
-        queue.add(new Node(from, 0));
+        queue.add(new DijkstraNode(from, 0));
 
         // Основной цикл алгоритма Дейкстры
         while (!queue.isEmpty()) {
-            Node current = queue.poll();
-            City currentCity = current.city;
+            DijkstraNode current = queue.poll();
+            City currentCity = current.getCity();
 
             // Пропускаем уже обработанные вершины
             if (visited.contains(currentCity)) {
@@ -107,7 +89,7 @@ public class DijkstraPathFinder {
                     distances.put(neighbor, newDistance);
                     predecessors.put(neighbor, currentCity);
                     usedRoads.put(neighbor, road);
-                    queue.add(new Node(neighbor, newDistance));
+                    queue.add(new DijkstraNode(neighbor, newDistance));
                 }
             }
         }

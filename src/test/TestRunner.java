@@ -6,6 +6,9 @@ package test;
  * Компиляция и запуск:
  * javac -d out src/model/*.java src/graph/*.java src/parser/*.java src/solver/*.java src/writer/*.java src/test/*.java
  * java -cp out test.TestRunner
+ * 
+ * Для нагрузочного тестирования:
+ * java -cp out test.LoadTest
  */
 public class TestRunner {
 
@@ -37,5 +40,10 @@ public class TestRunner {
         System.out.println("\n════════════════════════════════════════════════════");
         System.out.println("Время выполнения: " + (endTime - startTime) + " мс");
         System.out.println("════════════════════════════════════════════════════");
+        
+        System.out.println("\nДля запуска нагрузочного теста:");
+        System.out.println("  java -cp out test.LoadTest");
+        System.out.println("\nДля запуска теста производительности:");
+        System.out.println("  java -cp out test.PerformanceTest");
     }
 }

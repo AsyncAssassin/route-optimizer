@@ -27,24 +27,6 @@ public class OptimizedDijkstraPathFinder {
     private final Graph graph;
 
     /**
-     * Вспомогательный класс для хранения вершины и расстояния в очереди.
-     */
-    private static class Node implements Comparable<Node> {
-        final City city;
-        final int distance;
-
-        Node(City city, int distance) {
-            this.city = city;
-            this.distance = distance;
-        }
-
-        @Override
-        public int compareTo(Node other) {
-            return Integer.compare(this.distance, other.distance);
-        }
-    }
-
-    /**
      * Контейнер для хранения состояния поиска по одному критерию.
      */
     private static class SearchState {
@@ -53,7 +35,7 @@ public class OptimizedDijkstraPathFinder {
         final Map<City, City> predecessors = new HashMap<>();
         final Map<City, Road> usedRoads = new HashMap<>();
         final Set<City> visited = new HashSet<>();
-        final PriorityQueue<Node> queue = new PriorityQueue<>();
+        final PriorityQueue<DijkstraNode> queue = new PriorityQueue<>();
 
         SearchState(Criterion criterion) {
             this.criterion = criterion;
@@ -86,7 +68,7 @@ public class OptimizedDijkstraPathFinder {
                 state.distances.put(city, Integer.MAX_VALUE);
             }
             state.distances.put(from, 0);
-            state.queue.add(new Node(from, 0));
+            state.queue.add(new DijkstraNode(from, 0));
             
             states.put(criterion, state);
         }
@@ -125,8 +107,8 @@ public class OptimizedDijkstraPathFinder {
      */
     private void processNextVertex(SearchState state) {
         while (!state.queue.isEmpty()) {
-            Node current = state.queue.poll();
-            City currentCity = current.city;
+            DijkstraNode current = state.queue.poll();
+            City currentCity = current.getCity();
 
             // Пропускаем уже обработанные вершины
             if (state.visited.contains(currentCity)) {
@@ -149,7 +131,7 @@ public class OptimizedDijkstraPathFinder {
                     state.distances.put(neighbor, newDistance);
                     state.predecessors.put(neighbor, currentCity);
                     state.usedRoads.put(neighbor, road);
-                    state.queue.add(new Node(neighbor, newDistance));
+                    state.queue.add(new DijkstraNode(neighbor, newDistance));
                 }
             }
 

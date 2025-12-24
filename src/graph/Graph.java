@@ -44,15 +44,26 @@ public class Graph {
      * Сложность: O(1).
      * 
      * @param road дорога для добавления
+     * @throws IllegalStateException если города дороги не добавлены в граф
      */
     public void addRoad(Road road) {
+        List<Road> fromList = adjacencyList.get(road.getFrom());
+        List<Road> toList = adjacencyList.get(road.getTo());
+        
+        if (fromList == null) {
+            throw new IllegalStateException("Город не добавлен в граф: " + road.getFrom());
+        }
+        if (toList == null) {
+            throw new IllegalStateException("Город не добавлен в граф: " + road.getTo());
+        }
+        
         // Добавляем дорогу в обоих направлениях (граф неориентированный)
-        adjacencyList.get(road.getFrom()).add(road);
+        fromList.add(road);
         
         // Создаём обратную дорогу с теми же параметрами
         Road reverseRoad = new Road(road.getTo(), road.getFrom(), 
                 road.getDistance(), road.getTime(), road.getCost());
-        adjacencyList.get(road.getTo()).add(reverseRoad);
+        toList.add(reverseRoad);
     }
 
     /**

@@ -1,6 +1,5 @@
 package solver;
 
-import graph.DijkstraPathFinder;
 import graph.OptimizedDijkstraPathFinder;
 import graph.Graph;
 import model.City;
@@ -60,10 +59,19 @@ public class RouteSolver {
      * 
      * @param request запрос с городами отправления/назначения и приоритетами
      * @return результат с оптимальными и компромиссным маршрутами
+     * @throws IllegalArgumentException если город не найден в графе
      */
     public SolutionResult solve(Request request) {
         City from = graph.getCityByName(request.getFromCity());
         City to = graph.getCityByName(request.getToCity());
+
+        // Валидация
+        if (from == null) {
+            throw new IllegalArgumentException("Город отправления не найден: " + request.getFromCity());
+        }
+        if (to == null) {
+            throw new IllegalArgumentException("Город назначения не найден: " + request.getToCity());
+        }
 
         // Находим оптимальные маршруты по всем критериям
         Map<Criterion, Route> optimalRoutes = pathFinder.findAllOptimalPaths(from, to);

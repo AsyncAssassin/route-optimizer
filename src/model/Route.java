@@ -3,12 +3,16 @@ package model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Представляет маршрут — последовательность городов с суммарными параметрами.
  * Хранит общую длину, время и стоимость пути.
  */
 public class Route {
+    /** Кэшированный пустой маршрут (Flyweight pattern) */
+    private static final Route EMPTY = new Route(Collections.emptyList(), Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    
     private final List<City> cities;
     private final int totalDistance;
     private final int totalTime;
@@ -30,10 +34,11 @@ public class Route {
     }
 
     /**
-     * Создаёт пустой маршрут (путь не найден).
+     * Возвращает пустой маршрут (путь не найден).
+     * Использует кэшированный экземпляр для экономии памяти.
      */
     public static Route empty() {
-        return new Route(Collections.emptyList(), Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        return EMPTY;
     }
 
     /**
@@ -85,14 +90,11 @@ public class Route {
         if (!exists()) {
             return "Маршрут не найден";
         }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < cities.size(); i++) {
-            sb.append(cities.get(i).getName());
-            if (i < cities.size() - 1) {
-                sb.append(" -> ");
-            }
+        StringJoiner joiner = new StringJoiner(" -> ");
+        for (City city : cities) {
+            joiner.add(city.getName());
         }
-        return sb.toString();
+        return joiner.toString();
     }
 
     /**
