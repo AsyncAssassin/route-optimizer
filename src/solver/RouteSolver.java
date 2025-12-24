@@ -1,6 +1,7 @@
 package solver;
 
 import graph.DijkstraPathFinder;
+import graph.OptimizedDijkstraPathFinder;
 import graph.Graph;
 import model.City;
 import model.Criterion;
@@ -12,15 +13,18 @@ import java.util.*;
 /**
  * Решатель задачи оптимизации маршрутов.
  * Находит оптимальные маршруты по каждому критерию и выбирает компромиссный вариант.
+ * 
+ * ОПТИМИЗАЦИЯ: Использует OptimizedDijkstraPathFinder, который выполняет
+ * поиск по всем критериям за один проход вместо трёх отдельных запусков.
  */
 public class RouteSolver {
 
     private final Graph graph;
-    private final DijkstraPathFinder pathFinder;
+    private final OptimizedDijkstraPathFinder pathFinder;
 
     public RouteSolver(Graph graph) {
         this.graph = graph;
-        this.pathFinder = new DijkstraPathFinder(graph);
+        this.pathFinder = new OptimizedDijkstraPathFinder(graph);
     }
 
     /**

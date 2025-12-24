@@ -282,14 +282,16 @@ public class IntegrationTest {
     }
 
     private static void writeFile(String filename, String content) throws IOException {
-        try (FileWriter writer = new FileWriter(filename)) {
+        try (java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
+                new FileOutputStream(filename), java.nio.charset.StandardCharsets.UTF_8)) {
             writer.write(content);
         }
     }
 
     private static String readFile(String filename) throws IOException {
         StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader = new BufferedReader(
+                new java.io.InputStreamReader(new FileInputStream(filename), java.nio.charset.StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");

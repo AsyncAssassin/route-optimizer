@@ -6,8 +6,10 @@ import model.Criterion;
 import model.Road;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -76,7 +78,9 @@ public class InputParser {
 
         String currentSection = null;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        // Явно указываем кодировку UTF-8 для корректного чтения кириллицы
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(filename), StandardCharsets.UTF_8))) {
             String line;
             int lineNumber = 0;
 

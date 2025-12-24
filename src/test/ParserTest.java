@@ -295,7 +295,8 @@ public class ParserTest {
      * Записывает содержимое в тестовый файл
      */
     private static void writeTestFile(String content) throws IOException {
-        try (FileWriter writer = new FileWriter(TEST_FILE)) {
+        try (java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
+                new java.io.FileOutputStream(TEST_FILE), java.nio.charset.StandardCharsets.UTF_8)) {
             writer.write(content);
         }
     }

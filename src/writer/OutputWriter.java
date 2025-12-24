@@ -5,8 +5,10 @@ import model.Route;
 import solver.RouteSolver.SolutionResult;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -23,7 +25,9 @@ public class OutputWriter {
      * @throws IOException при ошибке записи
      */
     public void write(List<SolutionResult> results, String filename) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+        // Явно указываем кодировку UTF-8 для корректного отображения кириллицы
+        try (BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(filename), StandardCharsets.UTF_8))) {
             for (int i = 0; i < results.size(); i++) {
                 writeResult(writer, results.get(i));
 
